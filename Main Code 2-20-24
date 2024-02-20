@@ -1,0 +1,27 @@
+# Imports go at the top
+from microbit import *
+import neopixel
+import music
+
+bob = pin1.read_analog()
+
+np = neopixel.NeoPixel(pin16, 16)
+
+while True:
+    bob = pin1.read_analog()
+    print(bob)
+    sleep(1)
+    if bob > 900:
+        display.show(Image.HAPPY)
+        set_volume(100)
+        music.play(music.BA_DING)
+    elif bob < 900:
+        display.show(Image.ANGRY)
+        music.stop
+    if bob > 900:
+        np.fill((100, 100, 100))
+        np.show()
+        sleep(1000)
+    else:
+        np.fill((0, 0, 0))
+        np.show()
