@@ -1,0 +1,31 @@
+# Imports go at the top
+from microbit import *
+import neopixel
+import music
+
+bob = pin1.read_analog()
+lights_on  = False
+microphone.set_threshold(SoundEvent.QUIET, bob < 900)
+
+np = neopixel.NeoPixel(pin16, 16)
+
+while True:
+    bob = pin1.read_analog()
+    print(bob)
+    sleep(1)
+    if bob > 1000:
+        display.show(Image.HAPPY)
+        set_volume(100)
+        music.play(music.BA_DING)
+    elif bob < 1000:
+        display.show(Image.ANGRY)
+        music.stop
+    if bob > 1000:
+        if lights_on:
+                np.fill((0, 0, 0))
+                np.show() 
+                lights_on = False
+        else: 
+            np.fill((255, 255, 255))
+            np.show()
+            lights_on = True
