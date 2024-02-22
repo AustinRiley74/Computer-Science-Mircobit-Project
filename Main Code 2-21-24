@@ -3,10 +3,10 @@ from microbit import *
 import neopixel
 import music
 
+#Lights
 bob = pin1.read_analog()
 lights_on  = False
 microphone.set_threshold(SoundEvent.QUIET, bob < 900)
-
 np = neopixel.NeoPixel(pin16, 16)
 
 while True:
