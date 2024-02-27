@@ -1,0 +1,49 @@
+from microbit import *
+import neopixel
+import music
+
+#Servo
+fourty_five_clock = 50
+fourty_five_counter = 130
+pin15.set_analog_period(20)
+
+#Infrared
+pin2.set_pull(pin2.NO_PULL)
+fred = pin2.read_digital()
+motion_detect = False
+
+#Lights
+bob = pin1.read_analog()
+lights_on = False
+microphone.set_threshold(SoundEvent.QUIET, bob < 900)
+np = neopixel.NeoPixel(pin16, 16)
+
+while True:
+    bob = pin1.read_analog()
+    #print(bob)
+    sleep(1)
+    if bob > 1000:
+        display.show(Image.HAPPY)
+        set_volume(100)
+        music.play(music.BA_DING)
+    elif bob < 1000:
+        display.show(Image.ANGRY)
+        music.stop
+    if bob > 1000:
+        if lights_on:
+            np.fill((0, 0, 0))
+            np.show()
+            lights_on = False
+        else:
+            np.fill((255, 255, 255))
+            np.show()
+            lights_on = True
+    fred = pin2.read_digital()
+    print(fred)
+    if fred == 1:
+        motion_detect = True
+        pin15.write_analog(fourty_five_clock)
+        sleep(100)
+    if fred == 0:
+        motion_detect = False
+        pin15.write_analog(fourty_five_counter)
