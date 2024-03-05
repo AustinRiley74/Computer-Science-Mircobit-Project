@@ -1,0 +1,16 @@
+# Imports go at the top
+from microbit import *
+
+def b_right(): 
+    display.set_pixel(4,4,0)
+    sleep(25)
+
+def light_fill():
+    for y in range(5):
+        for x in range(5):
+            display.set_pixel(x,y,9)
+            sleep(100)
+
+while True:
+    display.clear()
+    light_fill()
