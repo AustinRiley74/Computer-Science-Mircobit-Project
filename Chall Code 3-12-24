@@ -1,0 +1,46 @@
+# Imports go at the top
+from microbit import *
+import time
+import neopixel
+
+bob = pin1.read_analog()
+np = neopixel.NeoPixel(pin16, 16)
+
+switch_press = False
+
+last_hr_t = time.ticks_ms()
+clock_update_rate = 500
+hour = -1 
+x = 0
+y = 0
+
+def updateClock(hour):
+    hour = (hour + 1) % 24
+    x = hour % 5
+    y = hour // 5
+    if hour == 0:
+        display.clear()
+    display.set_pixel(x, y, 9)
+    
+    return hour
+while True:
+    if time.ticks_diff(time.ticks_ms(), last_hr_t) >= clock_update_rate:
+        hour = updateClock(hour)
+        last_hr_t = time.ticks_ms()
+    bob = pin1.read_analog()
+    #print(bob)
+    #sleep(100)
+    #print("*")
+    val = pin2.read_digital()
+    if val == 1:
+        if switch_press:
+            switch_press = True
+            np.clear()
+        else:
+            if bob <= 300:  
+                 np.fill((16, 15, 10))
+                 np.show()
+            if bob >= 400:
+                switch_press = False
+                np.fill((45, 23, 37))
+                np.show()
